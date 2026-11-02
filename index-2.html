@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dreizehn Lichter für Ulrike</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap">
+<style>
+/* Layout: a projector stage. Thirteen candles in a row above, the current word large below, keyboard driven. Single dark look by choice (candlelit evening). */
+:root {
+  --night: #17141f;
+  --night-2: #221d2c;
+  --wax: #efe4cf;
+  --wax-shadow: #b9a888;
+  --flame: #ffcf6b;
+  --ember: #e8893a;
+  --ink-soft: #a89fb6;
+  --ink: #f4ede1;
+  --display: "Gloock", "Georgia", "Times New Roman", serif;
+  --body: "Literata", "Georgia", "Times New Roman", serif;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body {
+  background: radial-gradient(120% 80% at 50% 0%, var(--night-2), var(--night) 60%);
+  background-color: var(--night);
+  color: var(--ink);
+  font-family: var(--body);
+  overflow-x: hidden;
+}
+.stage {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: clamp(16px, 3vh, 40px);
+  padding-block: clamp(16px, 4vh, 48px);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  box-sizing: border-box;
+  overflow-x: clip;
+}
+
+/* Candle row */
+/* Feste Spalten: 6 Kerzen, Abstand, 7 Kerzen. Die Reihe passt immer in die Breite. */
+.row {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr)) minmax(0, .6fr) repeat(7, minmax(0, 1fr));
+  align-items: end;
+  column-gap: clamp(2px, .8vw, 14px);
+  width: min(100%, 1100px);
+  margin-inline: auto;
+}
+.candle {
+  appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  border-radius: 8px;
+}
+.candle:focus-visible { outline: 2px solid var(--flame); outline-offset: 6px; }
+.flame-box { position: relative; height: clamp(30px, 5.5vw, 80px); width: 100%; display: grid; justify-items: center; align-items: end; }
+.wick { width: 2px; height: 8px; background: #3a3030; border-radius: 1px; }
+.flame {
+  position: absolute; bottom: 6px;
+  width: 42%; height: 78%;
+  border-radius: 50% 50% 45% 45% / 62% 62% 38% 38%;
+  background: radial-gradient(ellipse at 50% 72%, #fff8e6 0 18%, var(--flame) 42%, var(--ember) 72%, transparent 76%);
+  opacity: 0; transform: scale(.2); transform-origin: 50% 100%;
+  transition: opacity .6s ease, transform .8s cubic-bezier(.2,1.4,.4,1);
+  filter: drop-shadow(0 0 10px rgba(255,190,90,.75));
+}
+.halo {
+  position: absolute; bottom: -10%; left: 50%;
+  width: 260%; aspect-ratio: 1; max-width: none;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(255,196,110,.20), transparent 62%);
+  opacity: 0; transition: opacity 1s ease; pointer-events: none;
+}
+.body {
+  width: 64%;
+  height: clamp(54px, 10vw, 140px);
+  border-radius: 3px 3px 2px 2px;
+  background: linear-gradient(90deg, var(--wax-shadow), var(--wax) 35%, var(--wax) 60%, var(--wax-shadow));
+  opacity: .42;
+  transition: opacity .8s ease;
+}
+.letter {
+  font-family: var(--display);
+  font-size: clamp(16px, 3.2vw, 50px);
+  line-height: 1;
+  color: var(--ink-soft);
+  opacity: .5;
+  transition: color .6s ease, opacity .6s ease;
+}
+.candle.lit .flame { opacity: 1; transform: scale(1); animation: flicker 2.8s ease-in-out infinite; }
+.candle.lit .halo { opacity: 1; }
+.candle.lit .body { opacity: 1; }
+.candle.lit .letter { color: var(--ink); opacity: 1; }
+.candle.current .letter { color: var(--flame); }
+@keyframes flicker {
+  0%, 100% { transform: scale(1) rotate(-1deg); }
+  30% { transform: scale(1.04, .96) rotate(1.5deg); }
+  55% { transform: scale(.97, 1.05) rotate(-.5deg); }
+  80% { transform: scale(1.02, .98) rotate(1deg); }
+}
+
+/* Word stage */
+.word-area {
+  display: grid; align-content: center; justify-items: center;
+  text-align: center; gap: clamp(8px, 2vh, 22px);
+  min-width: 0;
+}
+.eyebrow {
+  font-size: clamp(12px, 1.3vw, 18px);
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.word {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(40px, 9vw, 150px);
+  line-height: 1;
+  margin: 0;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+.word .initial { color: var(--flame); }
+.line {
+  font-size: clamp(16px, 2.1vw, 32px);
+  max-width: 40ch;
+  color: var(--ink);
+  margin: 0;
+  text-wrap: balance;
+}
+.line em { color: var(--flame); font-style: italic; }
+.guess .word { color: var(--flame); }
+
+/* Zitatfolien aus dem Interview */
+.quote .word { font-size: clamp(34px, 6.5vw, 110px); color: var(--flame); }
+.quote .line {
+  font-style: italic;
+  font-size: clamp(16px, 1.9vw, 30px);
+  line-height: 1.4;
+  max-width: 46ch;
+}
+.quote .line em { font-style: normal; }
+.quote .source { font-size: clamp(12px, 1.2vw, 16px); color: var(--ink-soft); letter-spacing: .06em; margin: 0; }
+
+.fade-in { animation: rise .7s ease both; }
+@keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+/* Footer controls */
+.foot {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 10px 20px;
+  font-size: clamp(12px, 1.1vw, 15px); color: var(--ink-soft);
+}
+.count { font-variant-numeric: tabular-nums; letter-spacing: .08em; }
+.speaker { padding: 4px 12px; border: 1px solid rgba(255,207,107,.4); border-radius: 999px; color: var(--flame); }
+.controls { display: flex; gap: 8px; flex-wrap: wrap; }
+.controls button {
+  font: inherit; color: var(--ink); background: transparent;
+  border: 1px solid rgba(244,237,225,.25); border-radius: 6px;
+  padding: 6px 12px; cursor: pointer;
+}
+.controls button:hover { border-color: var(--flame); color: var(--flame); }
+.controls button:focus-visible { outline: 2px solid var(--flame); outline-offset: 2px; }
+.hint { opacity: .7; }
+
+@media (max-width: 560px) {
+  .hint { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .candle.lit .flame { animation: none; }
+  .fade-in { animation: none; }
+  .flame, .halo, .body, .letter { transition: none; }
+}
+</style>
+
+<style>body{margin:0}</style>
+</head>
+<body>
+<main class="stage" id="stage">
+  <div class="row" id="row" aria-label="Kerzen für die Buchstaben des Namens"></div>
+
+  <section class="word-area" id="wordArea" aria-live="polite">
+    <div class="eyebrow">Heinrich Pesch Haus · 29. November 2026</div>
+    <h1 class="word">Ulrike Gentner</h1>
+    <p class="line">34 Jahre Bildungsarbeit in Ludwigshafen</p>
+  </section>
+
+  <footer class="foot">
+    <span class="count" id="count">Dreizehn Lichter</span>
+    <div class="controls">
+      <button id="prev" type="button">Zurück</button>
+      <button id="next" type="button">Weiter</button>
+      <button id="full" type="button">Vollbild</button>
+    </div>
+  </footer>
+</main>
+
+<script>
+const A = "";
+const B = "";
+
+const LETTERS = "ULRIKEGENTNER".split("");
+const QUOTE_EYEBROW = "Stimmen zur Zusammenarbeit";
+const QUOTE_SOURCE = "Aus einem Interview, 2026";
+
+/* Jeder Schritt: Buchstabenindex, Wort, Zeile, Sprecher, Zuruf ja/nein.
+   Schritte mit quote: true sind Zitatfolien aus dem Interview. Sie zünden keine neue Kerze. */
+const STEPS = [
+  { i: -1, eyebrow: "Heinrich Pesch Haus · 29. November 2026", word: "Ulrike Gentner", line: "34 Jahre Bildungsarbeit in Ludwigshafen", who: B },
+  { i: -1, eyebrow: "Geschichten bei Kerzenschein", word: "13 Buchstaben", line: "Dein Name in dreizehn Lichtern", who: A },
+  { i: 0, word: "Unterscheidung", line: "Erwachsenenbildung als Ort der <em>„Fähigkeit zum Unterscheiden“</em>", who: A },
+  { i: 1, word: "Ludwigshafen", line: "34 Jahre, mehr als 12.000 Tage im Heinrich Pesch Haus", who: A },
+  { i: 1, quote: true, word: "Die Konstante", line: "„Auch wenn die Leiter des Hauses oft gewechselt haben, war sie die Konstante, mit einer hohen Identifikation zum Haus. Ganz logisch ist sie irgendwann in die Leitung gekommen.“", who: A },
+  { i: 1, quote: true, word: "Herzblut", line: "„Für sie war das Haus ein Stück Leben, ein Stück Familie. Sie hat sich immer mit viel Herzblut engagiert.“", who: A },
+  { i: 2, word: "Respekt", line: "Respekt als Grundhaltung, in allen Angeboten und im Umgang mit jedem Menschen", who: B },
+  { i: 3, word: "Ignatianisch", line: "Den ganzen Menschen sehen und fördern, in Pädagogik, spiritueller und politischer Bildung", who: B },
+  { i: 4, word: "Das K", line: "Katholisch als Haltung und <em>roter Faden</em> Deines Engagements", who: A },
+  { i: 5, word: "Erzählen", line: "Internationales Erzählfest und über 20 Jahre Geschichten bei Kerzenschein. <em>Erzählen als verbindende Kulturtechnik</em>", who: A },
+  { i: 6, word: "Gemeinwohl", line: "Von Heinrich Peschs Solidarismus zur Demokratiebildung heute, mit MahlzeitLU, der Heinrich Pesch Siedlung und Zukunft LU", who: B },
+  { i: 7, word: "Ehrenamt", line: "Gegen den Trend begeisterst Du Menschen für das Ehrenamt, allein 33 in den Sprachkursen", who: B },
+  { i: 7, quote: true, word: "Loyalität", line: "Tiefe Verbundenheit mit der KEB Rheinland-Pfalz, mit dem Haus und mit der katholischen Erwachsenenbildung insgesamt. <em>„Wir haben uns immer schon getragen gefühlt.“</em>", who: B },
+  { i: 8, word: "Niedrigschwelligkeit", line: "Option für die Armen, <em>„entschiedene und radikale Parteinahme für die Schwächsten“</em> (Leo XIV., 2025)", who: B },
+  { i: 9, word: "Teilhabe", line: "<em>„…oder ich kreiere eine Tür“</em> (Gentner, 2014)", who: A },
+  { i: 10, word: "nicht verhandelbar", line: "Die Würde jedes Menschen ist unverfügbar und unverhandelbar", who: A },
+  { i: 11, word: "Ermächtigung", line: "Deine Angebote für Selbstverstehen, Weltverstehen und Weltgestalten", who: A },
+  { i: 12, word: "Ruhestand", line: "Ab dem Ersten Advent 2026. <em>Wir haben noch viel gemeinsam vor.</em>", who: A },
+  { i: 12, quote: true, word: "Im Hintergrund", line: "„Ihren Beitrag zum Gelingen dieses Hauses hat sie nie in den Vordergrund gestellt. Sie hat immer viel gemacht und sich sehr bescheiden im Hintergrund gehalten.“", who: B },
+  { i: 99, eyebrow: "Heinrich Pesch Haus · 29. November 2026", word: "Danke, Ulrike.", line: "Gottes Segen für alles, was jetzt beginnt", who: B },
+];
+
+/* Zuruf-Schritte werden in zwei Klicks aufgedeckt: erst der Buchstabe, dann das Wort */
+const FRAMES = [];
+STEPS.forEach((s, n) => {
+  if (s.guess) FRAMES.push({ step: n, reveal: false });
+  FRAMES.push({ step: n, reveal: true });
+});
+
+const row = document.getElementById("row");
+const area = document.getElementById("wordArea");
+const count = document.getElementById("count");
+const candles = [];
+
+function makeCandle(ch, idx) {
+  const b = document.createElement("button");
+  b.className = "candle";
+  b.type = "button";
+  b.setAttribute("aria-label", "Buchstabe " + ch);
+  b.innerHTML = '<div class="flame-box"><div class="halo"></div><div class="flame"></div><div class="wick"></div></div><div class="body"></div><div class="letter">' + ch + '</div>';
+  b.addEventListener("click", () => {
+    const f = FRAMES.findIndex(fr => STEPS[fr.step].i === idx && fr.reveal && !STEPS[fr.step].quote);
+    if (f >= 0) go(f);
+  });
+  candles.push(b);
+  return b;
+}
+LETTERS.forEach((ch, idx) => {
+  if (idx === 6) { const gap = document.createElement("span"); gap.setAttribute("aria-hidden", "true"); row.appendChild(gap); }
+  row.appendChild(makeCandle(ch, idx));
+});
+
+let pos = 0;
+
+function render() {
+  const fr = FRAMES[pos];
+  const s = STEPS[fr.step];
+  const litUpTo = s.i === 99 ? 12 : (fr.reveal ? s.i : s.i - 1);
+  candles.forEach((c, k) => {
+    c.classList.toggle("lit", k <= litUpTo);
+    c.classList.toggle("current", k === s.i && !s.quote);
+  });
+
+  area.classList.toggle("guess", !fr.reveal);
+  area.classList.toggle("quote", !!s.quote);
+  let html;
+  if (!fr.reveal) {
+    html = '<div class="eyebrow">Ihr Zuruf</div>' +
+      '<h1 class="word">' + LETTERS[s.i] + ' …</h1>' +
+      '<p class="line">Rufen Sie das Wort in den Saal</p>';
+  } else if (s.quote) {
+    html = '<div class="eyebrow">' + QUOTE_EYEBROW + '</div>' +
+      '<h1 class="word">' + s.word + '</h1>' +
+      '<p class="line">' + s.line + '</p>' +
+      '<p class="source">' + QUOTE_SOURCE + '</p>';
+  } else if (s.i >= 0 && s.i < 99) {
+    const w = s.word;
+    html = '<div class="eyebrow">' + (s.i < 6 ? "Ulrike" : "Gentner") + ' · Buchstabe ' + (s.i + 1) + ' von 13</div>' +
+      '<h1 class="word"><span class="initial">' + w.charAt(0) + '</span>' + w.slice(1) + '</h1>' +
+      '<p class="line">' + s.line + '</p>';
+  } else {
+    html = '<div class="eyebrow">' + s.eyebrow + '</div>' +
+      '<h1 class="word">' + s.word + '</h1>' +
+      '<p class="line">' + s.line + '</p>';
+  }
+  area.innerHTML = html;
+  area.querySelectorAll(".word, .line, .source").forEach(el => el.classList.add("fade-in"));
+
+  const lit = Math.max(0, Math.min(13, litUpTo + 1));
+  count.textContent = lit === 0 ? "Dreizehn Lichter" : lit + " von 13 Lichtern";
+}
+function go(n) { pos = Math.max(0, Math.min(FRAMES.length - 1, n)); render(); }
+
+document.getElementById("next").addEventListener("click", () => go(pos + 1));
+document.getElementById("prev").addEventListener("click", () => go(pos - 1));
+document.getElementById("full").addEventListener("click", () => {
+  const el = document.documentElement;
+  if (document.fullscreenElement) { document.exitFullscreen().catch(() => {}); }
+  else if (el.requestFullscreen) { el.requestFullscreen().catch(() => {}); }
+});
+document.addEventListener("keydown", (e) => {
+  if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key) && !(e.target instanceof HTMLButtonElement && e.key !== "ArrowRight")) { e.preventDefault(); go(pos + 1); }
+  else if (["ArrowLeft", "PageUp"].includes(e.key)) { e.preventDefault(); go(pos - 1); }
+  else if (e.key === "Home") go(0);
+  else if (e.key === "End") go(FRAMES.length - 1);
+});
+
+/* Bildschirm während des Vortrags wach halten, falls erlaubt */
+try { navigator.wakeLock && navigator.wakeLock.request("screen").catch(() => {}); } catch (e) {}
+
+render();
+</script>
+
+</body>
+</html>
