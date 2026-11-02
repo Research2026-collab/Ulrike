@@ -216,8 +216,8 @@ const A = "";
 const B = "";
 
 const LETTERS = "ULRIKEGENTNER".split("");
-const QUOTE_EYEBROW = "Stimmen zur Zusammenarbeit";
-const QUOTE_SOURCE = "Aus einem Interview, 2026";
+const QUOTE_EYEBROW = "Aus unserer Zusammenarbeit";
+const QUOTE_SOURCE = "";
 
 /* Jeder Schritt: Buchstabenindex, Wort, Zeile, Sprecher, Zuruf ja/nein.
    Schritte mit quote: true sind Zitatfolien aus dem Interview. Sie zünden keine neue Kerze. */
@@ -226,8 +226,8 @@ const STEPS = [
   { i: -1, eyebrow: "Geschichten bei Kerzenschein", word: "13 Buchstaben", line: "Dein Name in dreizehn Lichtern", who: A },
   { i: 0, word: "Unterscheidung", line: "Erwachsenenbildung als Ort der <em>„Fähigkeit zum Unterscheiden“</em>", who: A },
   { i: 1, word: "Ludwigshafen", line: "34 Jahre, mehr als 12.000 Tage im Heinrich Pesch Haus", who: A },
-  { i: 1, quote: true, word: "Die Konstante", line: "„Auch wenn die Leiter des Hauses oft gewechselt haben, war sie die Konstante, mit einer hohen Identifikation zum Haus. Ganz logisch ist sie irgendwann in die Leitung gekommen.“", who: A },
-  { i: 1, quote: true, word: "Herzblut", line: "„Für sie war das Haus ein Stück Leben, ein Stück Familie. Sie hat sich immer mit viel Herzblut engagiert.“", who: A },
+  { i: 1, quote: true, word: "Die Konstante", line: "Die Leitungen des Hauses haben oft gewechselt. Du warst die Konstante, mit einer hohen Identifikation zum Haus.", who: A },
+  { i: 1, quote: true, word: "Herzblut", line: "Das Haus war für Dich ein Stück Leben, ein Stück Familie. Du hast Dich immer mit viel Herzblut engagiert.", who: A },
   { i: 2, word: "Respekt", line: "Respekt als Grundhaltung, in allen Angeboten und im Umgang mit jedem Menschen", who: B },
   { i: 3, word: "Ignatianisch", line: "Den ganzen Menschen sehen und fördern, in Pädagogik, spiritueller und politischer Bildung", who: B },
   { i: 4, word: "Das K", line: "Katholisch als Haltung und <em>roter Faden</em> Deines Engagements", who: A },
@@ -240,7 +240,7 @@ const STEPS = [
   { i: 10, word: "nicht verhandelbar", line: "Die Würde jedes Menschen ist unverfügbar und unverhandelbar", who: A },
   { i: 11, word: "Ermächtigung", line: "Deine Angebote für Selbstverstehen, Weltverstehen und Weltgestalten", who: A },
   { i: 12, word: "Ruhestand", line: "Ab dem Ersten Advent 2026. <em>Wir haben noch viel gemeinsam vor.</em>", who: A },
-  { i: 12, quote: true, word: "Im Hintergrund", line: "„Ihren Beitrag zum Gelingen dieses Hauses hat sie nie in den Vordergrund gestellt. Sie hat immer viel gemacht und sich sehr bescheiden im Hintergrund gehalten.“", who: B },
+  { i: 12, quote: true, word: "Im Hintergrund", line: "Deinen Beitrag zum Gelingen dieses Hauses hast Du nie in den Vordergrund gestellt. Du hast viel gemacht und Dich bescheiden im Hintergrund gehalten.", who: B },
   { i: 99, eyebrow: "Heinrich Pesch Haus · 29. November 2026", word: "Danke, Ulrike.", line: "Gottes Segen für alles, was jetzt beginnt", who: B },
 ];
 
@@ -296,7 +296,7 @@ function render() {
     html = '<div class="eyebrow">' + QUOTE_EYEBROW + '</div>' +
       '<h1 class="word">' + s.word + '</h1>' +
       '<p class="line">' + s.line + '</p>' +
-      '<p class="source">' + QUOTE_SOURCE + '</p>';
+      (QUOTE_SOURCE ? '<p class="source">' + QUOTE_SOURCE + '</p>' : '');
   } else if (s.i >= 0 && s.i < 99) {
     const w = s.word;
     html = '<div class="eyebrow">' + (s.i < 6 ? "Ulrike" : "Gentner") + ' · Buchstabe ' + (s.i + 1) + ' von 13</div>' +
